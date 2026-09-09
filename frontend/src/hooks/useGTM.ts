@@ -1,18 +1,20 @@
 import { useCallback } from 'react';
-import TagManager from 'react-gtm-module';
+
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
 
 export const useGTM = () => {
   const pushEvent = useCallback((event: string, data?: Record<string, any>) => {
-    if (import.meta.env.DEV) {
-      console.log('📊 GTM Event:', event, data);
-      return;
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event,
+        ...data,
+        timestamp: new Date().toISOString(),
+      });
     }
-    
-    TagManager.dataLayer.push({
-      event,
-      ...data,
-      timestamp: new Date().toISOString(),
-    });
   }, []);
 
   const trackCTA = useCallback((brandName: string, location: string) => {

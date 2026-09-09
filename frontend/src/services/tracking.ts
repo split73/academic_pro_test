@@ -1,8 +1,6 @@
 import ReactGA from 'react-ga4';
-import TagManager from 'react-gtm-module';
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-const GTM_ID = import.meta.env.VITE_GTM_ID;
 const isDevelopment = import.meta.env.DEV;
 
 declare global {
@@ -18,16 +16,6 @@ export const initGA = () => {
   
   if (GA_MEASUREMENT_ID) {
     ReactGA.initialize(GA_MEASUREMENT_ID);
-  }
-  
-  if (GTM_ID) {
-    TagManager.initialize({
-      gtmId: GTM_ID,
-      dataLayer: {
-        environment: 'production',
-        pageType: 'landing',
-      },
-    });
   }
 };
 
@@ -56,20 +44,22 @@ export const trackEvent = (
     value,
   });
   
-  TagManager.dataLayer.push({
-    event: 'gaEvent',
-    eventCategory: category,
-    eventAction: action,
-    eventLabel: label,
-    eventValue: value,
-  });
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'gaEvent',
+      eventCategory: category,
+      eventAction: action,
+      eventLabel: label,
+      eventValue: value,
+    });
+  }
 };
 
 export const trackCTAClick = (brandName: string, sub1: string = 'organic') => {
   trackEvent('CTA', 'Click', brandName, 1);
   
-  if (!isDevelopment) {
-    TagManager.dataLayer.push({
+  if (!isDevelopment && window.dataLayer) {
+    window.dataLayer.push({
       event: 'ctaClick',
       brandName: brandName,
       sub1: sub1,
@@ -79,7 +69,7 @@ export const trackCTAClick = (brandName: string, sub1: string = 'organic') => {
   
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const redirectUrl = `${backendUrl}/click?offer=${encodeURIComponent(brandName)}&sub1=${encodeURIComponent(sub1)}`;
-  console.log(redirectUrl)
+  
   if (isDevelopment) {
     return;
   }
@@ -94,11 +84,13 @@ export const setUser = (userId: string, userData?: any) => {
   
   ReactGA.set({ userId });
   
-  TagManager.dataLayer.push({
-    event: 'userLoggedIn',
-    userId: userId,
-    userData: userData,
-  });
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'userLoggedIn',
+      userId: userId,
+      userData: userData,
+    });
+  }
 };
 
 export const tracking = {
