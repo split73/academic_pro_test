@@ -18,8 +18,7 @@ out
 
 # Local environment files
 *.local
-*.env
-.env.*
+.env*
 !.env.example
 
 # IDE and editor files
@@ -46,4 +45,3 @@ bun.lockb
 *.temp
 *.cache
 .vercel
-.env*
