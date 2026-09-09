@@ -7,11 +7,7 @@ class Database {
 
   private constructor() {
     this.pool = new Pool({
-      host: config.db.host,
-      port: config.db.port,
-      database: config.db.database,
-      user: config.db.user,
-      password: config.db.password,
+      connectionString: config.databaseUrl,
       ssl: config.isProduction ? {
         rejectUnauthorized: false,
       } : false,
