@@ -24,29 +24,4 @@ export const api = {
     const url = `${API_BASE_URL}/click?offer=${encodeURIComponent(offer)}&sub1=${encodeURIComponent(sub1)}`;
     window.location.href = url;
   },
-
-  getClicks: async (limit: number = 100, offset: number = 0, offer?: string): Promise<ClickResponse> => {
-    let url = `${API_BASE_URL}/clicks?limit=${limit}&offset=${offset}`;
-    if (offer) {
-      url += `&offer=${encodeURIComponent(offer)}`;
-    }
-    
-    const response = await fetch(url);
-    return response.json();
-  },
-
-  getBrands: async (): Promise<{ success: boolean; data: Brand }> => {
-    const response = await fetch(`${API_BASE_URL}/brands`);
-    return response.json();
-  },
-
-  getClickById: async (clickId: string): Promise<{ success: boolean; data: any }> => {
-    const response = await fetch(`${API_BASE_URL}/clicks/${clickId}`);
-    return response.json();
-  },
-
-  healthCheck: async (): Promise<{ status: string; timestamp: string; environment: string }> => {
-    const response = await fetch(`${API_BASE_URL}/health`);
-    return response.json();
-  },
 };

@@ -15,14 +15,3 @@ export interface ClickInput {
   ip: string;
   user_agent: string;
 }
-
-export interface BrandUrl {
-  [key: string]: string;
-}
-
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}

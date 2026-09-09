@@ -37,18 +37,6 @@ export class ClickModel {
     return parseInt(rows[0]?.count || '0', 10);
   }
 
-  static async findByOffer(offer: string, limit: number = 100): Promise<Click[]> {
-    const query = `
-      SELECT * FROM clicks
-      WHERE offer = $1
-      ORDER BY created_at DESC
-      LIMIT $2
-    `;
-
-    const { rows } = await db.query<Click>(query, [offer, limit]);
-    return rows;
-  }
-
   static async findByClickId(clickId: string): Promise<Click | null> {
     const query = 'SELECT * FROM clicks WHERE click_id = $1';
     const { rows } = await db.query<Click>(query, [clickId]);
