@@ -13,7 +13,6 @@ export const Hero: React.FC = () => {
           <div>
             <div className="hero-badge">Dell Technologies™</div>
             <h1 className="hero-title">
-              Starts at Dell University! <br />
               <span className="hero-title-highlight">Power Your Future</span>
             </h1>
             <p className="hero-description">

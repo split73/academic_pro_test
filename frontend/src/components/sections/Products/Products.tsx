@@ -45,7 +45,7 @@ export const Products: React.FC = () => {
     <section id="products" className="products">
       <div className="container">
         <div className="products-header">
-          <span className="products-badge">Why Choose Dell University?</span>
+          <span className="products-badge">Why Choose Dell?</span>
           <h2 className="products-title">Explore Our Premium Lineup</h2>
           <p className="products-subtitle">Discover the perfect solution for your needs.</p>
         </div>
