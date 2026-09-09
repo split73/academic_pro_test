@@ -9,7 +9,7 @@ class Database {
     const cleanConnectionString = config.databaseUrl.replace(/&?channel_binding=[^&]+/, '');
 
     this.pool = new Pool({
-      connectionString: cleanConnectionString,
+      connectionString: "postgresql://neondb_owner:npg_gPtB4VWLTf0r@ep-withered-shape-av6m9ydq-pooler.c-11.us-east-1.aws.neon.tech/neondb?sslmode=require",
       ssl: config.isProduction ? {
         rejectUnauthorized: false,
       } : false,
