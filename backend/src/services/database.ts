@@ -6,8 +6,10 @@ class Database {
   private pool: Pool;
 
   private constructor() {
+    const cleanConnectionString = config.databaseUrl.replace(/&?channel_binding=[^&]+/, '');
+
     this.pool = new Pool({
-      connectionString: config.databaseUrl,
+      connectionString: cleanConnectionString,
       ssl: config.isProduction ? {
         rejectUnauthorized: false,
       } : false,
