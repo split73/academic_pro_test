@@ -1,11 +1,8 @@
 import React from 'react';
+import { CTAActionButton } from '../../common/CTAActionButton/CTAActionButton';
 import './CTASection.css';
 
-interface CTASectionProps {
-  onCTAClick: (buttonName: string, sub1?: string) => void;
-}
-
-export const CTASection: React.FC<CTASectionProps> = ({ onCTAClick }) => {
+export const CTASection: React.FC = () => {
   const reviews = [
     { name: 'John D.', text: 'The XPS 16 has completely transformed my workflow!', rating: '' },
     { name: 'Sarah M.', text: 'Best investment for my business. The Latitude series is a game-changer.', rating: '' },
@@ -44,18 +41,18 @@ export const CTASection: React.FC<CTASectionProps> = ({ onCTAClick }) => {
               to enterprise solutions, find the perfect fit for your needs.
             </p>
             <div className="cta-final-actions">
-              <button
-                onClick={() => onCTAClick('explore_products', 'cta_main')}
+              <CTAActionButton
+                brandName="Dell"
+                sub1="cta_explore_products"
+                label="Explore Products"
                 className="btn btn-primary"
-              >
-                Explore Products
-              </button>
-              <button
-                onClick={() => onCTAClick('contact_sales', 'cta_secondary')}
+              />
+              <CTAActionButton
+                brandName="Dell"
+                sub1="cta_contact_sales"
+                label="Contact Sales"
                 className="btn btn-secondary"
-              >
-                Contact Sales
-              </button>
+              />
             </div>
           </div>
         </div>

@@ -5,13 +5,12 @@ import './Layout.css';
 
 interface LayoutProps {
   children: React.ReactNode;
-  onCTAClick: (buttonName: string, sub1?: string) => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, onCTAClick }) => {
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="layout-main">
-      <Header onCTAClick={onCTAClick} />
+      <Header/>
       <main>{children}</main>
       <Footer />
     </div>

@@ -1,6 +1,5 @@
 import React from 'react';
-import { CTAActionButton } from '../CTAActionButton/CTAActionButton';
-import './MobileMenu.css'
+import './MobileMenu.css';
 
 interface NavItem {
   id: string;
@@ -12,7 +11,6 @@ interface MobileMenuProps {
   items: NavItem[];
   isOpen: boolean;
   onItemClick: (href: string) => void;
-  onCTAClick: (buttonName: string, sub1?: string) => void;
   onClose: () => void;
 }
 
@@ -20,7 +18,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   items,
   isOpen,
   onItemClick,
-  onCTAClick,
   onClose,
 }) => {
   if (!isOpen) return null;
@@ -43,14 +40,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             </a>
           </li>
         ))}
-        <li className="mobile-menu-button">
-          <CTAActionButton
-            onClick={() => {
-              onClose();
-              onCTAClick('mobile_cta', 'mobile');
-            }}
-          />
-        </li>
       </ul>
     </div>
   );

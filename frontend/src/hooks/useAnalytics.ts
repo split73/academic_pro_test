@@ -1,15 +1,10 @@
 import { useCallback } from 'react';
-import { tracking } from '../services/tracking.ts';
+import { tracking } from '../services/tracking';
 
 export const useAnalytics = () => {
-  const trackCTA = useCallback((buttonName: string, sub1?: string) => {
-    tracking.trackEvent({
-      action: 'click',
-      category: 'CTA',
-      label: buttonName,
-      value: sub1 ? 1 : 0,
-    });
+  const handleCTAClick = useCallback((brandName: string, sub1?: string) => {
+    tracking.trackCTAClick(brandName, sub1 || 'organic');
   }, []);
 
-  return { trackCTA };
+  return { handleCTAClick };
 };

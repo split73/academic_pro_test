@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { HeaderLogo } from './HeaderLogo';
 import { NavLinks } from '../../common/NavLinks/NavLinks.tsx';
-import { CTAActionButton } from '../../common/CTAActionButton/CTAActionButton.tsx';
 import { BurgerMenu } from '../../common/BurgerMenu/BurgerMenu.tsx';
 import { MobileMenu } from '../../common/MobileMenu/MobileMenu.tsx';
 import './Header.css';
 
-interface HeaderProps {
-  onCTAClick: (buttonName: string, sub1?: string) => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onCTAClick }) => {
+export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -42,9 +37,6 @@ export const Header: React.FC<HeaderProps> = ({ onCTAClick }) => {
 
         <nav className="header-nav">
           <NavLinks items={navItems} onItemClick={handleNavClick} />
-          <CTAActionButton
-            onClick={() => onCTAClick('main_cta_button', 'header_cta')}
-          />
         </nav>
       </div>
 
@@ -52,7 +44,6 @@ export const Header: React.FC<HeaderProps> = ({ onCTAClick }) => {
         items={navItems}
         isOpen={isMenuOpen}
         onItemClick={handleNavClick}
-        onCTAClick={onCTAClick}
         onClose={() => setIsMenuOpen(false)}
       />
     </header>

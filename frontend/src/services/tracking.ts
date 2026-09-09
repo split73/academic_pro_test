@@ -1,105 +1,106 @@
-interface AnalyticsEvent {
-  action: string;
-  category: string;
-  label: string;
-  value?: number;
-}
+import ReactGA from 'react-ga4';
+import TagManager from 'react-gtm-module';
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+const GTM_ID = import.meta.env.VITE_GTM_ID;
+const isDevelopment = import.meta.env.DEV;
+
+export const initGA = () => {
+  if (isDevelopment) {
+    return;
   }
-}
-
-class TrackingService {
-  private static instance: TrackingService;
-  private initialized = false;
-
-  private constructor() {}
-
-  static getInstance(): TrackingService {
-    if (!TrackingService.instance) {
-      TrackingService.instance = new TrackingService();
-    }
-    return TrackingService.instance;
+  
+  if (GA_MEASUREMENT_ID) {
+    ReactGA.initialize(GA_MEASUREMENT_ID);
   }
-
-  initialize(gaId: string, gtmId: string): void {
-    if (this.initialized) return;
-    this.initGA(gaId);
-    this.initGTM(gtmId);
-    this.initialized = true;
+  
+  if (GTM_ID) {
+    TagManager.initialize({
+      gtmId: GTM_ID,
+      dataLayer: {
+        environment: 'production',
+        pageType: 'landing',
+      },
+    });
   }
+};
 
-  private initGA(gaId: string): void {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(...args: any[]) {
-      window.dataLayer.push(args);
-    };
-    window.gtag('js', new Date());
-    window.gtag('config', gaId);
+export const trackPageView = (path: string) => {
+  if (isDevelopment) {
+    return;
   }
+  
+  ReactGA.send({ hitType: 'pageview', page: path });
+};
 
-  private initGTM(gtmId: string): void {
-    const script = document.createElement('script');
-    script.innerHTML = `
-      (function(w,d,s,l,i){
-        w[l]=w[l]||[];
-        w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-        var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),
-        dl=l!='dataLayer'?'&l='+l:'';
-        j.async=true;
-        j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-        f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','${gtmId}');
-    `;
-    document.head.appendChild(script);
+export const trackEvent = (
+  category: string,
+  action: string,
+  label?: string,
+  value?: number
+) => {
+  if (isDevelopment) {
+    return;
   }
+  
+  ReactGA.event({
+    category,
+    action,
+    label,
+    value,
+  });
+  
+  TagManager.dataLayer.push({
+    event: 'gaEvent',
+    eventCategory: category,
+    eventAction: action,
+    eventLabel: label,
+    eventValue: value,
+  });
+};
 
-  trackEvent(event: AnalyticsEvent): void {
-    if (!this.initialized) {
-      console.warn('Tracking not initialized');
-      return;
-    }
-
-    if (window.gtag) {
-      window.gtag('event', event.action, {
-        event_category: event.category,
-        event_label: event.label,
-        value: event.value,
-      });
-    }
-
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        event: 'custom_event',
-        eventCategory: event.category,
-        eventAction: event.action,
-        eventLabel: event.label,
-        eventValue: event.value,
-      });
-    }
-
-    if (import.meta.env.DEV) {
-      console.log('📊 Analytics Event:', event);
-    }
+export const trackCTAClick = (brandName: string, sub1: string = 'organic') => {
+  trackEvent('CTA', 'Click', brandName, 1);
+  
+  if (!isDevelopment) {
+    TagManager.dataLayer.push({
+      event: 'ctaClick',
+      brandName: brandName,
+      sub1: sub1,
+      timestamp: new Date().toISOString(),
+    });
   }
-
-  trackPageView(path: string): void {
-    if (!this.initialized) return;
-    if (window.gtag) {
-      window.gtag('config', import.meta.env.VITE_GA_MEASUREMENT_ID, {
-        page_path: path,
-      });
-    }
+  
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const redirectUrl = `${backendUrl}/click?offer=${encodeURIComponent(brandName)}&sub1=${encodeURIComponent(sub1)}`;
+  
+  if (isDevelopment) {
+    return;
   }
-}
+  
+  window.location.href = redirectUrl;
+};
 
-export const tracking = TrackingService.getInstance();
+export const setUser = (userId: string, userData?: any) => {
+  if (isDevelopment) {
+    return;
+  }
+  
+  ReactGA.set({ userId });
+  
+  TagManager.dataLayer.push({
+    event: 'userLoggedIn',
+    userId: userId,
+    userData: userData,
+  });
+};
+
+export const tracking = {
+  initialize: initGA,
+  trackPageView,
+  trackEvent,
+  trackCTAClick,
+  setUser,
+};
+
+export default tracking;

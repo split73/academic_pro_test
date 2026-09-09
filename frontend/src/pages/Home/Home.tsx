@@ -5,17 +5,13 @@ import { Products } from '../../components/sections/Products/Products';
 import { CTASection } from '../../components/sections/CTASection/CTASection';
 import './Home.css';
 
-interface HomeProps {
-  onCTAClick: (buttonName: string, sub1?: string) => void;
-}
-
-export const Home: React.FC<HomeProps> = ({ onCTAClick }) => {
+export const Home: React.FC = () => {
   return (
     <div className="home">
-      <Hero onCTAClick={onCTAClick} />
+      <Hero />
       <Features />
-      <Products onCTAClick={onCTAClick} />
-      <CTASection onCTAClick={onCTAClick} />
+      <Products />
+      <CTASection />
     </div>
   );
 };

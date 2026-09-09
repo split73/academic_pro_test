@@ -1,17 +1,35 @@
 import React from 'react';
-import './CTAActionButton.css'
+import { tracking } from '../../../services/tracking';
+import './CTAActionButton.css';
 
 interface CTAActionButtonProps {
-  onClick: () => void;
+  brandName: string;
+  sub1?: string;
   label?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
 export const CTAActionButton: React.FC<CTAActionButtonProps> = ({
-    onClick,
-    label = 'SHOP NOW',
-  }) => {
+  brandName,
+  sub1 = 'organic',
+  label = 'SHOP NOW',
+  className = '',
+  onClick,
+}) => {
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    
+    tracking.trackCTAClick(brandName, sub1);
+  };
+
   return (
-    <button onClick={onClick} className="cta-button">
+    <button 
+      onClick={handleClick} 
+      className={`cta-button ${className}`}
+    >
       {label}
     </button>
   );
