@@ -6,10 +6,10 @@ class Database {
   private pool: Pool;
 
   private constructor() {
-    // const cleanConnectionString = config.databaseUrl.replace(/&?channel_binding=[^&]+/, '');
-
+    const cleanConnectionString = config.databaseUrl.replace(/&?channel_binding=[^&]+/, '');
+    console.log('db', config.databaseUrl)
     this.pool = new Pool({
-      connectionString: "postgresql://neondb_owner:npg_gPtB4VWLTf0r@ep-withered-shape-av6m9ydq-pooler.c-11.us-east-1.aws.neon.tech/neondb?sslmode=verify-full&connect_timeout=30",
+      connectionString: cleanConnectionString,
       ssl: config.isProduction ? {
         rejectUnauthorized: false,
       } : false,
