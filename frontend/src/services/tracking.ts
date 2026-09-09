@@ -79,7 +79,7 @@ export const trackCTAClick = (brandName: string, sub1: string = 'organic') => {
   
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
   const redirectUrl = `${backendUrl}/click?offer=${encodeURIComponent(brandName)}&sub1=${encodeURIComponent(sub1)}`;
-  
+  console.log(redirectUrl)
   if (isDevelopment) {
     return;
   }
