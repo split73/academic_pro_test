@@ -1,4 +1,5 @@
 import React from 'react';
+import { api } from '../../../services/api';
 import { tracking } from '../../../services/tracking';
 import './CTAActionButton.css';
 
@@ -21,8 +22,24 @@ export const CTAActionButton: React.FC<CTAActionButtonProps> = ({
     if (onClick) {
       onClick();
     }
-    
-    tracking.trackCTAClick(brandName, sub1);
+
+    tracking.trackEvent(
+      'CTA',
+      'click',
+      brandName,
+      1
+    );
+
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'ctaClick',
+        brandName: brandName,
+        sub1: sub1,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    api.trackClick(brandName, sub1);
   };
 
   return (

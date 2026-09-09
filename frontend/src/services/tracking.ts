@@ -5,6 +5,12 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 const GTM_ID = import.meta.env.VITE_GTM_ID;
 const isDevelopment = import.meta.env.DEV;
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 export const initGA = () => {
   if (isDevelopment) {
     return;
